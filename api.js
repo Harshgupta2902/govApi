@@ -40,7 +40,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 const getIfsc = require("./others/checkIfsc");
 const geBankDetails = require("./others/geBankDetails");
 
@@ -50,12 +49,10 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
+app.use("/api/getIfsc", cacheMiddleware, getIfsc);
+app.use("/api/geBankDetails", cacheMiddleware, geBankDetails);
 
-
-app.use("/api/getIfsc", getIfsc);
-app.use("/api/geBankDetails", geBankDetails);
-
-app.use("/api/getPincode", getPincode);
+app.use("/api/getPincode", cacheMiddleware, getPincode);
 
 app.get("/api/clearCache", (req, res) => {
   console.log("Cache cleared successfully");
@@ -63,11 +60,9 @@ app.get("/api/clearCache", (req, res) => {
   res.send("Cache cleared successfully");
 });
 
-
 cron.schedule("0 */6 * * *", () => {
   console.log("Clearing specific cache keys every 6 hours");
-   cache.flushAll();
-
+  cache.flushAll();
 });
 
 app.listen(3000, () => {
