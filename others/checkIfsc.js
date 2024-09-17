@@ -4,12 +4,16 @@ const mysql = require("mysql2/promise");
 require("dotenv").config();
 
 
-const db = mysql.createConnection({
+const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
+
 
 router.get("/:ifsc", async (req, res) => {
   const ifscCode = req.params.ifsc.toUpperCase();
@@ -20,8 +24,10 @@ router.get("/:ifsc", async (req, res) => {
   }
 
   try {
+    const connection = await pool.getConnection();
+
     if (all === "all") {
-      const [data] = await db.query("SELECT * FROM banks");
+      const [data] = await connection.query("SELECT * FROM banks");
       const links = data.map((bank) => {
         const city = bank.City2?.replaceAll(" ", "-").toLowerCase() ?? "";
         const state = bank.State?.replaceAll(" ", "-").toLowerCase() ?? "";
@@ -32,7 +38,7 @@ router.get("/:ifsc", async (req, res) => {
       });
       res.json({ links });
     } else {
-      const [rows] = await db.query(
+      const [rows] = await connection.query(
         "SELECT Bank, Ifsc, City2, State FROM banks WHERE Ifsc LIKE ?",
         [`${ifscCode}%`]
       );
