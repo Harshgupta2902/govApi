@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
 // Function to fetch data and save to JSON
 function fetchPincodeAndSaveToJson() {
   // SQL query to select all from the 'pincode' table
-  const query = "SELECT Branch, State, Ifsc, City2, Bank FROM banks";
+  const query = "SELECT * FROM banks";
 
   connection.query(query, (error, results) => {
     if (error) {
