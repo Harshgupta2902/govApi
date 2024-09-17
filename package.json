@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start": "node mongo.js",
-    "dev": "node mongo.js",
-    "build": "node mongo.js"
+    "start": "node api.js",
+    "dev": "node api.js",
+    "build": "node api.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
