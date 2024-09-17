@@ -45,7 +45,7 @@ const getPincode = require("./others/getPincode");
 
 // -------------------------------------------------------------------------------------------------------
 
-app.use("/api/getIfsc", cacheMiddleware, getIfsc);
+app.use("/api/getIfsc", getIfsc);
 app.use("/api/geBankDetails", cacheMiddleware, geBankDetails);
 app.use("/api/getPincode", cacheMiddleware, getPincode);
 
