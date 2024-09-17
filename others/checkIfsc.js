@@ -39,6 +39,7 @@ router.get("/:ifsc", async (req, res) => {
         "SELECT Bank, Ifsc, City2, State FROM banks WHERE Ifsc LIKE ?",
         [`${ifscCode}%`]
       );
+      console.log(rows);
 
       res.json(rows);
     }
