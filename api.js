@@ -10,6 +10,7 @@ const cacheMiddleware = (req, res, next) => {
 
   if (cachedResponse) {
     console.log(`Cache hit for ${key}`);
+    res.setHeader("Cache-Control", "public, max-age=3600");
     return res.send(cachedResponse);
   }
 
@@ -18,6 +19,7 @@ const cacheMiddleware = (req, res, next) => {
   res.send = (body) => {
     cache.set(key, body);
     console.log(`Cache set for ${key}`);
+    res.setHeader("Cache-Control", "public, max-age=3600");
     res.originalSend(body);
   };
   next();
@@ -25,6 +27,16 @@ const cacheMiddleware = (req, res, next) => {
 
 const app = express();
 app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Cache-Control", "public, max-age=3600");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 // -------------------------------------------------------------------------------------------------------
 
 const getIfsc = require("./others/checkIfsc");
