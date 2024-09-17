@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../db"); // Import the MySQL connection
+
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+});
 
 router.get("/:ifsc", async (req, res) => {
   const ifscCode = req.params.ifsc.toUpperCase();
