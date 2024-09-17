@@ -1,13 +1,14 @@
 {
   "scripts": {
-    "start": "node api.js",
-    "dev": "node api.js",
-    "build": "node api.js"
+    "start": "node mongo.js",
+    "dev": "node mongo.js",
+    "build": "node mongo.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "mongodb": "^6.9.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.7",
     "node-cache": "^5.1.2",
